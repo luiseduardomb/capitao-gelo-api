@@ -1,0 +1,2 @@
+jwt:
+  secret: "chave-secreta-apenas-para-testes-123456789"
