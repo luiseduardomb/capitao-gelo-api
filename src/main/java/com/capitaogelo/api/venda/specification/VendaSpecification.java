@@ -12,12 +12,14 @@ public class VendaSpecification {
 
     public static Specification<VendaEntity> comFiltros(
             Long clienteId,
+            Boolean clienteFinal,
             String formaPagamento,
             LocalDateTime dataInicio,
             LocalDateTime dataFim) {
 
         return Specification
                 .where(cliente(clienteId))
+                .and(clienteFinal(clienteFinal))
                 .and(formaPagamento(formaPagamento))
                 .and(dataMaiorOuIgual(dataInicio))
                 .and(dataMenorQue(dataFim));
@@ -83,6 +85,17 @@ public class VendaSpecification {
                     root.get("criadoEm"),
                     dataFim
             );
+        };
+    }
+
+    public static Specification<VendaEntity> clienteFinal(Boolean clienteFinal) {
+        return (root, query, criteriaBuilder) -> {
+
+            if (!Boolean.TRUE.equals(clienteFinal)) {
+                return null;
+            }
+
+            return criteriaBuilder.isNull(root.get("cliente"));
         };
     }
 }

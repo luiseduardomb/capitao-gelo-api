@@ -9,4 +9,6 @@ public interface ClienteRepository extends JpaRepository<ClienteEntity, Long> {
 
     List<ClienteEntity> findByAtivo(Boolean ativo);
 
+    long countByAtivoTrue();
+
 }

@@ -8,6 +8,8 @@ public record VendaFiltroRequest(
 
         Long clienteId,
 
+        Boolean clienteFinal,
+
         String formaPagamento,
 
         @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)

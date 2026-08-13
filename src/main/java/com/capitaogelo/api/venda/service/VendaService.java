@@ -73,7 +73,17 @@ public class VendaService {
                 throw new RegraNegocioException("Produto está inativo.");
             }
 
-            BigDecimal precoUnitario = produto.getPrecoPadrao();
+            BigDecimal precoUnitario = itemRequest.precoUnitario();
+
+            if (precoUnitario == null) {
+                precoUnitario = produto.getPrecoPadrao();
+            }
+
+            if (precoUnitario.compareTo(BigDecimal.ZERO) <= 0) {
+                throw new RegraNegocioException(
+                        "O preço unitário deve ser maior que zero."
+                );
+            }
 
             BigDecimal subtotal = precoUnitario
                     .multiply(BigDecimal.valueOf(itemRequest.quantidade()));
@@ -117,6 +127,7 @@ public class VendaService {
                     null,
                     null,
                     null,
+                    null,
                     null
             );
         }
@@ -137,6 +148,7 @@ public class VendaService {
         Specification<VendaEntity> specification =
                 VendaSpecification.comFiltros(
                         filtro.clienteId(),
+                        filtro.clienteFinal(),
                         filtro.formaPagamento(),
                         dataInicio,
                         dataFim
