@@ -34,6 +34,7 @@ build/
 
 ### Configuração local
 src/main/resources/application-local.yml
+src/test/resources/application-test.yml
 
 ### Variáveis de ambiente
 .env
