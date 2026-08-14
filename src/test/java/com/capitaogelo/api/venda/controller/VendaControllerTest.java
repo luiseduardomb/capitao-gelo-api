@@ -61,7 +61,8 @@ class VendaControllerTest {
                     "itens": [
                         {
                             "produtoId": 1,
-                            "quantidade": 2
+                            "quantidade": 2,
+                            "precoUnitario": 10.00
                         }
                     ],
                     "formaPagamento": "PIX"

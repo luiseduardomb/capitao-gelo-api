@@ -69,7 +69,8 @@ class VendaServiceTest {
 
         ItemVendaRequest item = new ItemVendaRequest(
                 1L,
-                2
+                2,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -118,7 +119,8 @@ class VendaServiceTest {
 
         ItemVendaRequest item = new ItemVendaRequest(
                 1L,
-                1
+                1,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -161,12 +163,14 @@ class VendaServiceTest {
 
         ItemVendaRequest item1 = new ItemVendaRequest(
                 1L,
-                2
+                2,
+                new BigDecimal("10.00")
         );
 
         ItemVendaRequest item2 = new ItemVendaRequest(
                 2L,
-                3
+                3,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -191,7 +195,7 @@ class VendaServiceTest {
         // Total      = 45,50
 
         assertEquals(
-                new BigDecimal("45.50"),
+                new BigDecimal("50.00"),
                 response.total()
         );
 
@@ -203,7 +207,8 @@ class VendaServiceTest {
 
         ItemVendaRequest item = new ItemVendaRequest(
                 1L,
-                1
+                1,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -234,7 +239,8 @@ class VendaServiceTest {
 
         ItemVendaRequest item = new ItemVendaRequest(
                 999L,
-                1
+                1,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -266,7 +272,8 @@ class VendaServiceTest {
 
         ItemVendaRequest item = new ItemVendaRequest(
                 1L,
-                1
+                1,
+                new BigDecimal("10.00")
         );
 
         CriarVendaRequest request = new CriarVendaRequest(
@@ -343,6 +350,7 @@ class VendaServiceTest {
         venda.setFormaPagamento("PIX");
 
         VendaFiltroRequest filtro = new VendaFiltroRequest(
+                null,
                 null,
                 null,
                 null,
