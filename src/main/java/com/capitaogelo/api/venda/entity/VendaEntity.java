@@ -1,6 +1,7 @@
 package com.capitaogelo.api.venda.entity;
 
 import com.capitaogelo.api.cliente.entity.ClienteEntity;
+import com.capitaogelo.api.venda.enums.StatusVenda;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -39,6 +40,10 @@ public class VendaEntity {
             orphanRemoval = true
     )
     private List<ItemVendaEntity> itens = new ArrayList<>();
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private StatusVenda status;
 
     @PrePersist
     protected void aoCriar() {

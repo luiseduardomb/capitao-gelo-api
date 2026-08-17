@@ -10,9 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/vendas")
@@ -35,7 +34,11 @@ public class VendaController {
     @GetMapping
     public Page<VendaResponse> listar(
             VendaFiltroRequest filtro,
-            @PageableDefault(size = 10, sort = "criadoEm", direction = Sort.Direction.DESC)
+            @PageableDefault(
+                    size = 10,
+                    sort = "criadoEm",
+                    direction = Sort.Direction.DESC
+            )
             Pageable pageable
     ) {
         return vendaService.listar(filtro, pageable);
@@ -44,5 +47,23 @@ public class VendaController {
     @GetMapping("/{id}")
     public VendaResponse buscarPorId(@PathVariable Long id) {
         return vendaService.buscarPorId(id);
+    }
+
+    @PatchMapping("/{id}/cancelar")
+    public ResponseEntity<VendaResponse> cancelarVenda(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                vendaService.cancelarVenda(id)
+        );
+    }
+
+    @PatchMapping("/{id}/pagar")
+    public ResponseEntity<VendaResponse> marcarComoPaga(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                vendaService.marcarComoPaga(id)
+        );
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -49,6 +50,7 @@ class VendaControllerTest {
                 new BigDecimal("20.00"),
                 "PIX",
                 null,
+                LocalDateTime.now(),
                 List.of()
         );
 
@@ -87,6 +89,7 @@ class VendaControllerTest {
                 new BigDecimal("20.00"),
                 "PIX",
                 null,
+                LocalDateTime.now(),
                 List.of()
         );
 
@@ -123,6 +126,7 @@ class VendaControllerTest {
                 new BigDecimal("20.00"),
                 "PIX",
                 null,
+                LocalDateTime.now(),
                 List.of()
         );
 

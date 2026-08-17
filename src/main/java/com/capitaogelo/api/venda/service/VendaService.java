@@ -14,6 +14,7 @@ import com.capitaogelo.api.venda.dto.VendaFiltroRequest;
 import com.capitaogelo.api.venda.dto.VendaResponse;
 import com.capitaogelo.api.venda.entity.ItemVendaEntity;
 import com.capitaogelo.api.venda.entity.VendaEntity;
+import com.capitaogelo.api.venda.enums.StatusVenda;
 import com.capitaogelo.api.venda.repository.VendaRepository;
 import com.capitaogelo.api.venda.specification.VendaSpecification;
 import org.springframework.data.domain.Page;
@@ -59,6 +60,12 @@ public class VendaService {
         }
 
         venda.setFormaPagamento(request.formaPagamento());
+
+        if ("A_PRAZO".equals(request.formaPagamento())) {
+            venda.setStatus(StatusVenda.PENDENTE);
+        } else {
+            venda.setStatus(StatusVenda.PAGA);
+        }
 
         BigDecimal total = BigDecimal.ZERO;
 
@@ -120,7 +127,9 @@ public class VendaService {
     }
 
     @Transactional(readOnly = true)
-    public Page<VendaResponse> listar(VendaFiltroRequest filtro, Pageable pageable) {
+    public Page<VendaResponse> listar(
+            VendaFiltroRequest filtro,
+            Pageable pageable) {
 
         if (filtro == null) {
             filtro = new VendaFiltroRequest(
@@ -159,6 +168,60 @@ public class VendaService {
                 .map(this::toResponse);
     }
 
+    @Transactional
+    public VendaResponse cancelarVenda(Long id) {
+
+        VendaEntity venda = vendaRepository.findById(id)
+                .orElseThrow(() ->
+                        new NaoEncontradoException("Venda não encontrada.")
+                );
+
+        if (venda.getStatus() == StatusVenda.CANCELADA) {
+            throw new RegraNegocioException(
+                    "Venda já está cancelada."
+            );
+        }
+
+        venda.setStatus(StatusVenda.CANCELADA);
+
+        venda = vendaRepository.save(venda);
+
+        return toResponse(venda);
+    }
+
+    @Transactional
+    public VendaResponse marcarComoPaga(Long id) {
+
+        VendaEntity venda = vendaRepository.findById(id)
+                .orElseThrow(() ->
+                        new NaoEncontradoException("Venda não encontrada.")
+                );
+
+        if (venda.getStatus() == StatusVenda.CANCELADA) {
+            throw new RegraNegocioException(
+                    "Não é possível marcar uma venda cancelada como paga."
+            );
+        }
+
+        if (venda.getStatus() == StatusVenda.PAGA) {
+            throw new RegraNegocioException(
+                    "Venda já está paga."
+            );
+        }
+
+        if (!"A_PRAZO".equals(venda.getFormaPagamento())) {
+            throw new RegraNegocioException(
+                    "Apenas vendas a prazo podem ser marcadas como pagas."
+            );
+        }
+
+        venda.setStatus(StatusVenda.PAGA);
+
+        venda = vendaRepository.save(venda);
+
+        return toResponse(venda);
+    }
+
     private VendaResponse toResponse(VendaEntity venda) {
 
         ClienteVendaResponse cliente = null;
@@ -186,6 +249,7 @@ public class VendaService {
                 cliente,
                 venda.getTotal(),
                 venda.getFormaPagamento(),
+                venda.getStatus(),
                 venda.getCriadoEm(),
                 itens
         );
