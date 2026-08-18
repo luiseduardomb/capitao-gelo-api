@@ -65,6 +65,7 @@ public class DashboardService {
                 cliente,
                 venda.getTotal(),
                 venda.getFormaPagamento(),
+                venda.getStatus().name(),
                 venda.getCriadoEm()
         );
     }

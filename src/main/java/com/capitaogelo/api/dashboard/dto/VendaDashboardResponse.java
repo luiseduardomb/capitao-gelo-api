@@ -8,6 +8,7 @@ public record VendaDashboardResponse(
         String cliente,
         BigDecimal total,
         String formaPagamento,
+        String status,
         LocalDateTime criadoEm
 ) {
 }
